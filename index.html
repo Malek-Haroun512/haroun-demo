@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>هارون بلاست — نموذج تجريبي (تصميم أمازون)</title>
+<meta name="theme-color" content="#131921">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;
+    background:#e9edf3;color:#131921;line-height:1.55;
+    padding-bottom:78px;max-width:480px;margin:0 auto;
+  }
+  @media(min-width:900px){body{box-shadow:0 0 40px rgba(0,0,0,.18)}}
+  :root{
+    --nav:#131921;--nav2:#232f3e;--amber:#febd69;--cta:#ffd814;
+    --blue:#007185;--line:#e2e6ec;--muted:#565959;
+  }
+
+  /* ===== ترويسة أمازون ===== */
+  header{
+    position:sticky;top:0;z-index:50;background:var(--nav);
+    padding:10px 12px 12px;box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  .hrow{display:flex;align-items:center;gap:10px}
+  .logo{
+    display:flex;align-items:center;gap:7px;flex-shrink:0;
+    background:#fff;padding:5px 9px;border-radius:8px;
+  }
+  .logo img{width:26px;height:26px;border-radius:5px}
+  .logo b{font-size:13px;color:#131921;letter-spacing:.3px}
+  .search{flex:1;display:flex;height:42px;border-radius:8px;overflow:hidden;background:#fff}
+  .search input{
+    flex:1;border:0;outline:0;padding:0 12px;font-size:15px;
+    font-family:inherit;background:#fff;color:#131921;min-width:0;
+  }
+  .search button{
+    width:52px;border:0;background:var(--amber);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:19px;color:#131921;
+  }
+  .cartbtn{position:relative;flex-shrink:0;font-size:22px;background:none;border:0;cursor:pointer;color:#fff}
+  .badge{
+    position:absolute;top:-6px;right:-8px;background:var(--amber);color:#131921;
+    font-size:11px;font-weight:800;min-width:18px;height:18px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;padding:0 4px;
+  }
+
+  /* ===== شرائح التصنيفات ===== */
+  .chips{
+    display:flex;gap:8px;overflow-x:auto;padding:10px 12px;
+    background:#fff;border-bottom:1px solid var(--line);scrollbar-width:none;
+  }
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    flex-shrink:0;padding:7px 15px;border-radius:20px;border:1px solid var(--line);
+    font-size:13.5px;font-weight:700;color:var(--nav);cursor:pointer;background:#fff;
+  }
+  .chip.on{background:var(--nav);color:#fff;border-color:var(--nav)}
+
+  /* ===== بانر ===== */
+  .hero{
+    margin:12px;border-radius:12px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,#0f1826 0%,#1b2b45 55%,#24365a 100%);
+    color:#fff;padding:20px 18px;min-height:132px;
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .hero .tagline{font-size:12px;color:var(--amber);font-weight:800;letter-spacing:.5px}
+  .hero h2{font-size:21px;line-height:1.35;margin:5px 0 7px;font-weight:800}
+  .hero p{font-size:13.5px;color:#c7d2e3;margin-bottom:13px}
+  .hero .cta{
+    align-self:flex-start;background:var(--cta);color:#131921;font-weight:800;
+    border:0;border-radius:20px;padding:9px 20px;font-size:14px;cursor:pointer;
+    font-family:inherit;box-shadow:0 2px 6px rgba(0,0,0,.3);
+  }
+  .hero::after{
+    content:"";position:absolute;left:-30px;bottom:-40px;width:150px;height:150px;
+    border-radius:50%;background:rgba(254,189,105,.13);
+  }
+
+  /* ===== عناوين الأقسام ===== */
+  .sechead{display:flex;align-items:center;justify-content:space-between;padding:16px 14px 9px}
+  .sechead h3{font-size:18px;font-weight:800}
+  .sechead a{font-size:13px;color:var(--blue);font-weight:700;text-decoration:none}
+
+  /* ===== صف أفقي (ستايل أمازون) ===== */
+  .row{
+    display:flex;gap:10px;overflow-x:auto;padding:0 14px 6px;scrollbar-width:none;
+    scroll-snap-type:x mandatory;
+  }
+  .row::-webkit-scrollbar{display:none}
+  .rcard{
+    flex-shrink:0;width:158px;background:#fff;border:1px solid var(--line);
+    border-radius:10px;padding:10px;scroll-snap-align:start;
+    display:flex;flex-direction:column;
+  }
+  .rcard .img{
+    width:100%;height:132px;border-radius:8px;background:#f4f6f9;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:9px;
+  }
+  .rcard .img img{max-width:100%;max-height:100%;object-fit:contain}
+  .rcard h4{
+    font-size:13px;font-weight:600;height:36px;overflow:hidden;line-height:1.35;margin-bottom:5px;
+  }
+  .avail{display:inline-block;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:11px;margin-bottom:6px}
+  .avail.on{background:#e6f6ec;color:#0f7b3d}
+  .avail.off{background:#fdeaea;color:#b3261e}
+  .price{font-size:19px;font-weight:800;margin-bottom:8px}
+  .price small{font-size:12px;font-weight:600;color:var(--muted)}
+
+  /* ===== شبكة المنتجات ===== */
+  .grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 14px;
+  }
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:10px;
+    padding:11px;display:flex;flex-direction:column;position:relative;
+  }
+  .card .img{
+    width:100%;height:150px;border-radius:8px;background:#f4f6f9;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:9px;
+  }
+  .card .img img{max-width:100%;max-height:100%;object-fit:contain}
+  .out{
+    position:absolute;top:9px;right:9px;background:#131921;color:#fff;
+    font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:4px;
+  }
+  .card h4{
+    font-size:13.5px;font-weight:600;height:37px;overflow:hidden;line-height:1.35;margin-bottom:5px;
+  }
+  .card .price{font-size:20px;margin:0 0 4px}
+  .card .price small{display:block;font-size:11.5px;font-weight:600;color:var(--muted)}
+  .addbtn{
+    margin-top:auto;background:var(--cta);border:0;border-radius:20px;padding:9px;
+    font-size:13.5px;font-weight:800;cursor:pointer;font-family:inherit;color:#131921;
+  }
+  .addbtn:disabled{background:#e9ecef;color:#9aa3ad;cursor:not-allowed}
+
+  /* ===== شريط التنقل السفلي ===== */
+  .tabbar{
+    position:fixed;bottom:0;right:0;left:0;background:#fff;
+    border-top:1px solid var(--line);display:flex;z-index:60;
+    box-shadow:0 -2px 10px rgba(0,0,0,.09);
+  }
+  .tabbar button{
+    flex:1;border:0;background:none;padding:8px 0 7px;cursor:pointer;
+    font-family:inherit;font-size:10.5px;color:var(--muted);font-weight:600;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+  }
+  .tabbar button.on{color:var(--blue)}
+  .tabbar .ic{font-size:19px}
+
+  /* ===== لوحة السلة ===== */
+  .sheet{
+    position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:80;
+    display:none;align-items:flex-end;
+  }
+  .sheet.open{display:flex}
+  .sheet .panel{
+    background:#fff;width:100%;max-width:520px;margin:0 auto;
+    border-radius:16px 16px 0 0;padding:18px 16px 22px;max-height:82vh;overflow-y:auto;
+  }
+  .sheet h3{font-size:17px;font-weight:800;margin-bottom:14px}
+  .ci{display:flex;gap:11px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+  .ci img{width:54px;height:54px;object-fit:contain;background:#f4f6f9;border-radius:7px}
+  .ci .nm{flex:1;font-size:13.5px;font-weight:600;min-width:0}
+  .ci .nm small{display:block;color:var(--muted);font-weight:500}
+  .ci .qty{display:flex;align-items:center;gap:9px}
+  .ci .qty button{
+    width:28px;height:28px;border-radius:50%;border:1px solid var(--line);
+    background:#fff;font-size:16px;cursor:pointer;font-family:inherit;line-height:1;
+  }
+  .ci .qty b{font-size:14px;min-width:16px;text-align:center}
+  .total{
+    display:flex;justify-content:space-between;font-weight:800;font-size:17px;
+    margin:15px 0 12px;
+  }
+  .checkout{
+    width:100%;background:var(--cta);border:0;border-radius:22px;padding:14px;
+    font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;
+  }
+  .notice{
+    margin:10px 14px 0;background:#fff8e6;border:1px solid #f2d98c;
+    border-radius:9px;padding:11px 13px;font-size:12.5px;color:#6b5310;
+  }
+  .empty{text-align:center;padding:26px 10px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <div class="logo">
+      <img src="icon.png" alt="هارون بلاست">
+      <b>HAROUN</b>
+    </div>
+    <div class="search">
+      <input id="q" type="search" placeholder="ابحث عن منتج…">
+      <button onclick="render()">🔍</button>
+    </div>
+    <button class="cartbtn" onclick="openCart()">🛒<span class="badge" id="cnt">0</span></button>
+  </div>
+</header>
+
+<div class="chips" id="chips"></div>
+
+<div class="hero">
+  <span class="tagline">عرض خاص 🎉</span>
+  <h2>كل منتجات البلاستيك<br>بأسعار الجملة</h2>
+  <p>توصيل لكل سوريا — اطلب من مكانك بدون ما تزور المحل</p>
+  <button class="cta" onclick="document.querySelector('.grid').scrollIntoView({behavior:'smooth'})">تسوّق الآن</button>
+</div>
+
+<div class="sechead"><h3>الأكثر طلبًا 🔥</h3><a href="#" onclick="return false">عرض الكل</a></div>
+<div class="row" id="topRow"></div>
+
+<div class="sechead"><h3 id="gridTitle">كل المنتجات</h3><a href="#" onclick="return false">ترتيب حسب السعر</a></div>
+<div class="notice">⚠️ هذه صفحة تجريبية لعرض شكل التطبيق فقط — الطلب هنا لا يُرسل.</div>
+<div class="grid" id="grid"></div>
+
+<div class="tabbar">
+  <button class="on" onclick="toast('الرئيسية')"><span class="ic">🏠</span>الرئيسية</button>
+  <button onclick="toast('التصنيفات')"><span class="ic">📂</span>التصنيفات</button>
+  <button onclick="openCart()"><span class="ic">🛒</span>السلة</button>
+  <button onclick="toast('الطلبات')"><span class="ic">📦</span>الطلبات</button>
+  <button onclick="toast('حسابي')"><span class="ic">👤</span>حسابي</button>
+</div>
+
+<div class="sheet" id="cart">
+  <div class="panel">
+    <h3>سلة التسوق</h3>
+    <div id="cartBody"></div>
+    <div class="total"><span>المجموع</span><span id="sum">0.00 $</span></div>
+    <button class="checkout">إتمام الطلب</button>
+  </div>
+</div>
+
+<script>
+const SUPA="https://kfiffvvrlnejthgoelcg.supabase.co";
+const KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmaWZmdnZybG5lanRoZ29lbGNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3NDA0NjIsImV4cCI6MjEwNTMxNjQ2Mn0.mRCFNImBclOg5Il7y08x9bPmeq0jTm1bvmOkBePAhQs";
+const H={apikey:KEY,Authorization:"Bearer "+KEY};
+
+let products=[],cats=[],cat=null,cart={};
+
+const money=v=>"$"+Number(v||0).toFixed(2);
+const avail=p=>(p.stock||0)>0
+  ? '<div class="avail on">✓ متوفر</div>'
+  : '<div class="avail off">✕ غير متوفر</div>';
+
+async function load(){
+  showLoading(true);
+  try{
+    const opts={headers:H};
+    const get=async u=>{
+      const r=await fetch(u,opts);
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return r.json();
+    };
+    const [p,c]=await Promise.all([
+      get(`${SUPA}/rest/v1/products?select=id,name,price,image_url,stock,is_active,categories(slug)&order=created_at.desc`),
+      get(`${SUPA}/rest/v1/categories?select=id,name,slug&order=name`)
+    ]);
+    products=(p||[]).filter(x=>x.is_active!==false);
+    cats=c||[];
+    document.getElementById("chips").innerHTML=
+      `<div class="chip on" data-s="">الكل</div>`+
+      cats.map(c=>`<div class="chip" data-s="${c.slug}">${c.name}</div>`).join("");
+    document.querySelectorAll(".chip").forEach(el=>el.onclick=()=>{
+      document.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));
+      el.classList.add("on");cat=el.dataset.s||null;render();
+    });
+  }catch(e){
+    document.getElementById("grid").innerHTML=
+      `<div class="empty" style="grid-column:1/-1">
+         ⚠️ تعذّر تحميل المنتجات — تأكد من الإنترنت<br><br>
+         <button class="addbtn" style="max-width:220px;margin:0 auto" onclick="load()">🔄 إعادة المحاولة</button>
+       </div>`;
+    document.getElementById("topRow").innerHTML="";
+    return;
+  }
+  showLoading(false);
+  render();
+}
+
+function showLoading(on){
+  const g=document.getElementById("grid");
+  if(on){g.innerHTML=`<div class="empty" style="grid-column:1/-1">جارٍ تحميل المنتجات…</div>`;
+         document.getElementById("topRow").innerHTML=`<div class="empty">…</div>`;}
+}
+
+function render(){
+  const q=(document.getElementById("q").value||"").trim();
+  let list=products.filter(p=>
+    (!cat||p.categories?.slug===cat) &&
+    (!q||p.name.includes(q))
+  );
+  const grid=document.getElementById("grid");
+  const top=document.getElementById("topRow");
+  const top3=[...products].sort((a,b)=>(b.stock||0)-(a.stock||0)).slice(0,6);
+  top.innerHTML=top3.map(card).join("");
+
+  document.getElementById("gridTitle").textContent=q?`نتائج البحث (${list.length})`:"كل المنتجات";
+  grid.innerHTML=list.length?list.map(card).join("")
+    :`<div class="empty" style="grid-column:1/-1">لا توجد منتجات مطابقة 🔍</div>`;
+  updateBadge();
+}
+
+function card(p){
+  const out=(p.stock||0)<=0;
+  return `<div class="card">
+    ${out?'<span class="out">غير متوفر</span>':''}
+    <div class="img">${p.image_url?`<img src="${p.image_url}" alt="${p.name}" loading="lazy">`:'<span style="font-size:34px">📦</span>'}</div>
+    <h4>${p.name}</h4>
+    ${avail(p)}
+    <div class="price">${money(p.price)}<small>السعر للقطعة</small></div>
+    <button class="addbtn" ${out?'disabled':''} onclick="add('${p.id}')">
+      ${out?'غير متوفر حاليًا':'＋ إضافة إلى السلة'}
+    </button>
+  </div>`;
+}
+
+function add(id){
+  cart[id]=(cart[id]||0)+1;
+  updateBadge();
+  const el=event.target, t=el.textContent;
+  el.textContent="✔ تمت الإضافة";el.disabled=true;
+  setTimeout(()=>{el.textContent=t;el.disabled=false;},1100);
+}
+function updateBadge(){
+  document.getElementById("cnt").textContent=Object.values(cart).reduce((a,b)=>a+b,0);
+}
+function openCart(){
+  const b=document.getElementById("cartBody");
+  const ids=Object.keys(cart);
+  if(!ids.length){b.innerHTML='<div class="empty">السلة فاضية 🛒<br>أضف منتجات أولًا</div>';}
+  else{
+    b.innerHTML=ids.map(id=>{
+      const p=products.find(x=>x.id===id);
+      return `<div class="ci">
+        <img src="${p.image_url||''}" alt="">
+        <div class="nm">${p.name}<small>${money(p.price)}</small></div>
+        <div class="qty">
+          <button onclick="dec('${id}')">−</button><b>${cart[id]}</b>
+          <button onclick="inc('${id}')">＋</button>
+        </div>
+      </div>`;
+    }).join("");
+  }
+  document.getElementById("sum").textContent=money(
+    ids.reduce((s,id)=>s+products.find(x=>x.id===id).price*cart[id],0));
+  document.getElementById("cart").classList.add("open");
+}
+function closeCart(){document.getElementById("cart").classList.remove("open");}
+function inc(id){cart[id]++;openCart();}
+function dec(id){cart[id]--;if(cart[id]<=0)delete cart[id];openCart();}
+document.getElementById("cart").onclick=e=>{if(e.target.id==="cart")closeCart();};
+function toast(t){alert(t+" — نموذج تجريبي");}
+document.getElementById("q").addEventListener("input",render);
+load();
+</script>
+</body>
+</html>
