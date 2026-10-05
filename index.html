@@ -57,9 +57,15 @@
 
   .layout{display:block}
   .sidebar{display:none}
-  .sechead{display:flex;align-items:baseline;justify-content:space-between;padding:6px 2px 10px}
+  .sechead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 2px 10px;flex-wrap:wrap}
   .sechead h3{font-size:17px;font-weight:800}
   .sechead span{font-size:12.5px;color:var(--blue);font-weight:700}
+  .tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .sortbox{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);
+           border-radius:9px;padding:5px 9px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .sortbox label{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+  .sortbox select{border:0;outline:0;background:transparent;font-family:inherit;font-size:12.5px;
+                  font-weight:800;color:var(--nav);cursor:pointer;padding:1px 2px;max-width:132px}
   .notice{background:#fff8e6;border:1px solid #f0dda6;border-radius:9px;padding:9px 12px;font-size:12px;color:#6b5310;margin-bottom:12px}
 
   /* ============ الشبكة ============ */
@@ -189,7 +195,23 @@
     </aside>
 
     <div class="content">
-      <div class="sechead"><h3 id="gridTitle">كل المنتجات</h3><span id="count"></span></div>
+      <div class="sechead">
+        <h3 id="gridTitle">كل المنتجات</h3>
+        <div class="tools">
+          <span id="count"></span>
+          <div class="sortbox">
+            <label for="sort">الفرز:</label>
+            <select id="sort">
+              <option value="new">الأحدث أولًا</option>
+              <option value="price-asc">السعر: من الأقل</option>
+              <option value="price-desc">السعر: من الأعلى</option>
+              <option value="name-asc">الاسم: أ - ي</option>
+              <option value="name-desc">الاسم: ي - أ</option>
+              <option value="avail">المتوفر أولًا</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <div class="notice">⚠️ نموذج تجريبي لعرض الشكل فقط — الطلب هنا لا يُرسل.</div>
       <div class="grid" id="grid"></div>
     </div>
@@ -259,6 +281,15 @@ function paintCats(){
 function render(){
   const q=(document.getElementById("q").value||"").trim();
   const list=products.filter(p=>(!cat||p.categories?.slug===cat)&&(!q||p.name.includes(q)));
+  const by={
+    "price-asc":(a,b)=>(a.price||0)-(b.price||0),
+    "price-desc":(a,b)=>(b.price||0)-(a.price||0),
+    "name-asc":(a,b)=>a.name.localeCompare(b.name,"ar"),
+    "name-desc":(a,b)=>b.name.localeCompare(a.name,"ar"),
+    "avail":(a,b)=>(a.stock>0?0:1)-(b.stock>0?0:1)
+  };
+  const s=by[document.getElementById("sort").value];
+  if(s) list.sort(s);
   document.getElementById("gridTitle").textContent=q?`نتائج البحث عن «${q}»`:"كل المنتجات";
   document.getElementById("count").textContent=`${list.length} منتج`;
   document.getElementById("grid").innerHTML=list.length?list.map(card).join("")
@@ -305,6 +336,7 @@ function dec(id){cart[id]--;if(cart[id]<=0)delete cart[id];openCart();}
 document.getElementById("cart").onclick=e=>{if(e.target.id==="cart")document.getElementById("cart").classList.remove("open");};
 function toast(t){alert(t+" — نموذج تجريبي");}
 document.getElementById("q").addEventListener("input",render);
+document.getElementById("sort").addEventListener("change",render);
 load();
 </script>
 </body>
